@@ -1,13 +1,27 @@
-#include <QtGui/QGuiApplication>
-#include "qtquick2applicationviewer.h"
+#include <QtGui/QApplication>
+#include <QtGui/QWidget>
+#include <QtGui/QLayout>
+#include <QWebView>
+
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
 
-    QtQuick2ApplicationViewer viewer;
-    viewer.setMainQmlFile(QStringLiteral("qml/webtest/main.qml"));
-    viewer.showExpanded();
+    QWidget *window = new QWidget();
+
+    QBoxLayout::Direction dir = QBoxLayout::TopToBottom;
+
+    QBoxLayout *layout = new QBoxLayout(dir);
+
+    QWebView *webview = new QWebView();
+    webview->setUrl(QUrl("http://www.google.com"));
+
+    window->resize(500, 500);
+    window->setLayout(layout);
+    layout->addWidget(webview);
+    webview->show();
+    window->show();
 
     return app.exec();
 }
