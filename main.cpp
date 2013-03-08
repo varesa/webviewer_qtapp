@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QBoxLayout *layout = new QBoxLayout(dir);
 
     QWebView *webview = new QWebView();
-    webview->setUrl(QUrl("http://www.google.com"));
+    webview->setUrl(QUrl("http://192.168.0.5/"));
 
     window->resize(500, 500);
     window->setLayout(layout);
