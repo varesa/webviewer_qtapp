@@ -41,17 +41,6 @@ int main(int argc, char *argv[])
 	}
     }
     
-    pos = args.lastIndexOf("-geom");
-    if(pos != -1) {
-	qDebug("DEBUG: -geom found");
-	if(args.count() > pos+1) {
-	    qDebug("DEBUG: There are arguments after it");
-	    if(!args.at(pos+1).startsWith("-")) {
-		qDebug("DEBUG: Next is not another argument");
-		geom = args.at(pos+1);
-	    }
-	}
-    }
     
     if(url != nullptr) {
 	qDebug("DEBUG: url from cmd-line: " + url.toLatin1());
@@ -67,7 +56,7 @@ int main(int argc, char *argv[])
 		url = in->readLine();
 	    }
 	    
-	    qDebug("DEBUG: URL loaded form a file: " + url.toLatin1());
+	    qDebug("URL loaded form a file: " + url.toLatin1());
     	}
     	
     	file->close();
@@ -82,13 +71,57 @@ int main(int argc, char *argv[])
     if(!url.contains(":")) {
 	qWarning("WARNING: You should specify the protocol (for example http://) in the url");
     }
+
+    pos = args.lastIndexOf("-geom");
+    if(pos != -1) {
+	qDebug("DEBUG: -geom found");
+	if(args.count() > pos+1) {
+	    qDebug("DEBUG: There are arguments after it");
+	    if(!args.at(pos+1).startsWith("-")) {
+		qDebug("DEBUG: Next is not another argument");
+		geom = args.at(pos+1);
+	    }
+	}
+    } 
     
     if(geom != nullptr) {
-	qDebug("DEBUG: goem from cmd-line: " + url.toLatin1());
+	qDebug("DEBUG: Geometry from cmd-line: " + geom.toLatin1());
+    } else {
+	qWarning("No geometry specified on cmd-line, looking for a file called geom.txt");
+	QFile *file = new QFile("geom.txt");
+	if(!file->open(QIODevice::ReadOnly)) {
+	    qWarning("File not found / could not open: " + file->errorString().toLatin1());
+	} else {
+	    QTextStream *in = new QTextStream(file);
+	    
+	    if(!in->atEnd()) {
+		geom = in->readLine();
+	    }
+	    
+	    qDebug("Geometry loaded form a file: " + url.toLatin1());
+    	}
+    	
+    	file->close();
+	
     }
     
-    //qDebug("%d", args.lastIndexOf("-url"));
-    //qDebug("%d",args.count());
+    if(geom == nullptr) {
+	geom = "800x600";
+	qWarning("No geometry provided on cmd-line / a file, loaded hardcoded value: " + geom.toLatin1());
+    }
+    
+    int width, height;
+    
+    QStringList parts = geom.split("x");
+    if(parts.count() < 2) {
+	qWarning("ERROR: Invalid geometry specified, falling back to 800x600");
+	width = 800;
+	height = 600;
+    } else {
+	width  = parts.at(0).toInt();
+	height = parts.at(1).toInt();
+    }
+    
 
     // Initialize window
 
@@ -104,14 +137,13 @@ int main(int argc, char *argv[])
     // Initialize web browser
 
     QWebView *webview = new QWebView();
-    //webview->setUrl(QUrl("http://www.google.com"));
     webview->setUrl(QUrl(url));
     webview->page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
     webview->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 
     // Open window
 
-    window->resize(800, 1000);
+    window->resize(width, height);
     window->setLayout(layout);
     layout->addWidget(webview);
     webview->show();
