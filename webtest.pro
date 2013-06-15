@@ -11,3 +11,4 @@ SOURCES += main.cpp
 #greaterThan(QT_MAJOR_VERSION, 4): 
 QT += webkitwidgets
 
+QMAKE_CXXFLAGS += -std=gnu++0x
