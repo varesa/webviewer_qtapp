@@ -7,4 +7,8 @@
 SOURCES += main.cpp
 
 # Add webkit to the project
-QT += webkit webkitwidgets
+#QT += webkit
+#greaterThan(QT_MAJOR_VERSION, 4): 
+QT += webkitwidgets
+
+QMAKE_CXXFLAGS += -std=gnu++0x
