@@ -1,11 +1,11 @@
 #include <QtCore/QFile>
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QLayout>
+#include <QApplication>
+#include <QWidget>
+#include <QLayout>
 
 #include <QWebView>
-#include <QtWebKitWidgets/QWebFrame>
+#include <QWebFrame>
 
 #include <QDebug>
 
