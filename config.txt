@@ -40,4 +40,4 @@ arm_freq=800
 
 # for more options see http://elinux.org/RPi_config.txt
 
-display_rotate=3
+display_rotate=0
