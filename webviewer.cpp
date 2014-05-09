@@ -9,6 +9,7 @@
 
 #include <QDebug>
 #include <QString>
+#include <QTimer>
 
 #include "webviewer.h"
 
@@ -109,6 +110,8 @@ int* WebViewer::getGeom() {
 
 QWebView* WebViewer::showWebView(int* geom, QString url)
 {
+    setOverrideCursor(Qt::BlankCursor);
+
     QWidget *window = new QWidget();
     window->setCursor(Qt::BlankCursor);
 
@@ -136,22 +139,35 @@ QWebView* WebViewer::showWebView(int* geom, QString url)
     return webview;
 }
 
-WebViewer::WebViewer(int argc, char *argv[]) : QApplication(argc, argv)
-{   
-    // Initialize app
-    //QApplication app(argc, argv);
-    //app.
-    setOverrideCursor(Qt::BlankCursor);
+void WebViewer::setupTimeout(QWebView* webview, QTimer* timer) {
+    connect(webview, SIGNAL(loadStarted()), SLOT(webViewLoadStarted()) );
+    connect(timer, SIGNAL(timeout()), SLOT(timerTimedOut()) );
+    timer->start(30000);
+}
 
+void WebViewer::webViewLoadStarted() {
+    qDebug("Page load, resetting timer");
+    timer->start(30000); // Reset timer
+}
+
+void WebViewer::timerTimedOut() {
+    qDebug("Timer timed out, reloading");
+    webview->reload();
+}
+
+WebViewer::WebViewer(int argc, char *argv[]) : QApplication(argc, argv)
+{
     // Read values
     QString url = getUrl();
     int* geom;
     geom = getGeom();
 
     // Initialize window
-    QWebView* webview = showWebView(geom, url);
+    webview = showWebView(geom, url);
+    timer = new QTimer(this);
+
+    setupTimeout(webview, timer);
 
     // Exec...
-    //return app.exec();
     exec();
 }
