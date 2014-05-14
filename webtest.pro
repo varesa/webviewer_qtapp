@@ -8,8 +8,8 @@ SOURCES += \
     webviewer.cpp \
     main.cpp
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-QT += webkit webkitwidgets
+QT += webkit
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
 QMAKE_CXXFLAGS += -std=gnu++0x
 
