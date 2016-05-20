@@ -10,6 +10,7 @@
 #include <QDebug>
 #include <QString>
 #include <QTimer>
+#include <QRect>
 
 #include "webviewer.h"
 
@@ -101,11 +102,22 @@ int* WebViewer::getGeom() {
     }
 
     if(geom == nullptr) {
-        geom = "800x600";
-        qWarning("No geometry provided on cmd-line / a file, loaded hardcoded value: " + geom.toLatin1());
+        QRect rect = QApplication::desktop()->screenGeometry();
+        int *geom = (int*)malloc(sizeof(int) * 2);
+        geom[WIDTH] = rect.width();
+        geom[HEIGHT] = rect.height();
+        
+        return geom;
+        //geom = "800x600";
+        //qWarning("No geometry provided on cmd-line / a file, loaded hardcoded value: " + geom.toLatin1());
+    } else {
+        return parseGeom(geom);
     }
+    
+     
 
-    return parseGeom(geom);
+
+    
 }
 
 QWebView* WebViewer::showWebView(int* geom, QString url)
