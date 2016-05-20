@@ -5,6 +5,7 @@
 #include <QLayout>
 
 #include <QWebView>
+#include <QWebSettings>
 #include <QWebFrame>
 
 #include <QDebug>
