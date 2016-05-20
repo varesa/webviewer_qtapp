@@ -159,6 +159,7 @@ void WebViewer::setupTimeout(QWebView* webview, QTimer* timer) {
 
 void WebViewer::webViewLoadStarted() {
     qDebug("Page load, resetting timer");
+    QWebSettings::globalSettings()->clearMemoryCaches(); // try to cap memory usage
     timer->start(30000); // Reset timer
 }
 
