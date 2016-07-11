@@ -162,7 +162,7 @@ void WebViewer::webViewLoadStarted() {
 
 void WebViewer::timerTimedOut() {
     qDebug("Timer timed out, reloading");
-    //webview->reload();
+    webview->reload();
 }
 
 WebViewer::WebViewer(int argc, char *argv[]) : QApplication(argc, argv)
