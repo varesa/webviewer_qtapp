@@ -1,6 +1,7 @@
 #include <QtCore/QFile>
 
 #include <QApplication>
+#include <QDesktopWidget>
 #include <QWidget>
 #include <QLayout>
 
@@ -114,11 +115,6 @@ int* WebViewer::getGeom() {
     } else {
         return parseGeom(geom);
     }
-    
-     
-
-
-    
 }
 
 QWebView* WebViewer::showWebView(int* geom, QString url)
