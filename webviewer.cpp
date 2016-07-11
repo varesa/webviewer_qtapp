@@ -155,7 +155,7 @@ QWebView* WebViewer::showWebView(int* geom, QString url)
 void WebViewer::setupTimeout(QWebView* webview, QTimer* timer) {
     connect(webview, SIGNAL(loadStarted()), SLOT(webViewLoadStarted()) );
     connect(timer, SIGNAL(timeout()), SLOT(timerTimedOut()) );
-    timer->start(30000);
+    timer->start(300000);
 }
 
 void WebViewer::webViewLoadStarted() {
@@ -166,7 +166,7 @@ void WebViewer::webViewLoadStarted() {
 
 void WebViewer::timerTimedOut() {
     qDebug("Timer timed out, reloading");
-    webview->reload();
+    //webview->reload();
 }
 
 WebViewer::WebViewer(int argc, char *argv[]) : QApplication(argc, argv)
